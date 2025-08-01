@@ -1,0 +1,16 @@
+product_id,name,sku,vendor_id,price,description,category,stock,weight,free_shipping,promotion_tag
+1,Smartphone Galaxy S23,SM-GALAXY-S23,1,3499.00,Smartphone Samsung Galaxy S23 128GB com câmera de 50MP,Smartphones,50,0.2,0,Promoção
+2,Notebook Dell Inspiron 15,DELL-INSPIRON-15,1,2899.00,Notebook Dell Inspiron 15 polegadas Intel i5 8GB RAM,Notebooks,25,2.5,0,Lançamento
+3,Fone de Ouvido Bluetooth,FONE-BT-SONY,1,299.90,Fone de ouvido Sony WH-1000XM4 com cancelamento de ruído,Fones de Ouvido,100,0.3,1,Frete Grátis
+4,Vestido Floral Verão,VEST-FLORAL-VERAO,2,89.90,Vestido floral perfeito para o verão brasileiro 100% algodão,Vestidos,200,0.4,1,Frete Grátis
+5,Camiseta Básica Algodão,CAM-BASICA-ALG,2,29.90,Camiseta básica 100% algodão orgânico brasileiro,Camisetas,500,0.2,1,Promoção
+6,Calça Jeans Skinny,CALCA-JEANS-SKINNY,2,129.90,Calça jeans skinny com elastano para máximo conforto,Calças,150,0.5,0,
+7,Sofá 3 Lugares Retrátil,SOFA-3-LUGARES,3,1299.00,Sofá confortável 3 lugares com retrátil e inclinação,Sofás,10,45.0,0,Lançamento
+8,Luminária de Mesa LED,LUM-MESA-LED,3,89.90,Luminária de mesa com LED regulável e carregador USB,Luminárias,75,1.2,1,Frete Grátis
+9,Tapete Persa Decorativo,TAPETE-PERSA,3,299.90,Tapete persa decorativo 2x3 metros 100% lã natural,Tapetes,20,3.0,0,
+10,Bola de Futebol Oficial,BOLA-FUTEBOL-OFICIAL,4,89.90,Bola de futebol oficial tamanho 5 para campo,Esportes,100,0.5,1,Frete Grátis
+11,Tênis Running Nike,TENIS-RUNNING-NIKE,4,399.90,Tênis Nike Air Max para corrida com amortecimento,Calçados Esportivos,80,0.8,0,Promoção
+12,Shampoo Natural Orgânico,SHAMPOO-NATURAL,5,49.90,Shampoo natural orgânico sem sulfatos e parabenos,Cuidados Capilares,200,0.3,1,Frete Grátis
+13,Creme Facial Hidratante,CREME-FACIAL,5,79.90,Creme facial hidratante com vitamina C e ácido hialurônico,Cuidados Faciais,150,0.2,0,
+14,Óleo Essencial Lavanda,OLEO-LAVANDA,5,39.90,Óleo essencial de lavanda 100% puro para aromaterapia,Aromaterapia,300,0.1,1,Frete Grátis
+15,Smart TV LG 55",SMART-TV-LG-55,1,2499.00,Smart TV LG 55 polegadas 4K com webOS e Netflix,TVs,15,15.0,0,Lançamento 

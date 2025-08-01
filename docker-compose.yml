@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # Servidor Web (Apache + PHP)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: magento_marketplace_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./magento2:/var/www/html
+      - ./themes:/var/www/html/app/design/frontend
+      - ./modules:/var/www/html/app/code
+    depends_on:
+      - db
+      - elasticsearch
+    environment:
+      - MAGENTO_BASE_URL=http://localhost:8080
+      - MAGENTO_DB_HOST=db
+      - MAGENTO_DB_NAME=magento_marketplace
+      - MAGENTO_DB_USER=magento
+      - MAGENTO_DB_PASSWORD=magento123
+      - MAGENTO_ADMIN_USER=admin
+      - MAGENTO_ADMIN_PASSWORD=admin123
+      - MAGENTO_ADMIN_EMAIL=admin@marketplace.com
+      - MAGENTO_ADMIN_FIRSTNAME=Admin
+      - MAGENTO_ADMIN_LASTNAME=User
+    networks:
+      - magento_network
+
+  # Banco de Dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: magento_marketplace_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: magento_marketplace
+      MYSQL_USER: magento
+      MYSQL_PASSWORD: magento123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docs/demo-data:/docker-entrypoint-initdb.d
+    networks:
+      - magento_network
+
+  # Elasticsearch para busca
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    container_name: magento_marketplace_elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - magento_network
+
+  # Redis para cache
+  redis:
+    image: redis:7-alpine
+    container_name: magento_marketplace_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - magento_network
+
+  # MailHog para e-mails de teste
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: magento_marketplace_mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - magento_network
+
+  # phpMyAdmin para gestão do banco
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: magento_marketplace_phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: magento
+      PMA_PASSWORD: magento123
+    depends_on:
+      - db
+    networks:
+      - magento_network
+
+volumes:
+  mysql_data:
+  elasticsearch_data:
+  redis_data:
+
+networks:
+  magento_network:
+    driver: bridge 

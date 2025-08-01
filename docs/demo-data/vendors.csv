@@ -1,0 +1,6 @@
+vendor_id,name,email,store_name,description,status,phone,address,city,state,cep
+1,TechGadgets,vendor1@techgadgets.com.br,TechGadgets,Especializada em produtos de tecnologia e gadgets com as melhores marcas do mercado,1,(11) 99999-1111,Rua das Tecnologias 123,São Paulo,SP,01234-567
+2,ModaBrasil,vendor2@modabrasil.com.br,ModaBrasil,Moda feminina e masculina com estilo brasileiro e qualidade premium,1,(11) 99999-2222,Avenida da Moda 456,Rio de Janeiro,RJ,20000-000
+3,CasaDecor,vendor3@casadecor.com.br,CasaDecor,Decoração e móveis para sua casa com design exclusivo,1,(11) 99999-3333,Rua dos Móveis 789,Belo Horizonte,MG,30000-000
+4,SportBrasil,vendor4@sportbrasil.com.br,SportBrasil,Equipamentos esportivos e roupas para todos os esportes,1,(11) 99999-4444,Avenida dos Esportes 321,Porto Alegre,RS,90000-000
+5,BelezaNatural,vendor5@belezanatural.com.br,BelezaNatural,Produtos de beleza naturais e orgânicos,1,(11) 99999-5555,Rua da Beleza 654,Salvador,BA,40000-000 
