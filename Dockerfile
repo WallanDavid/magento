@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     libgd-dev \
     libmagickwand-dev \
     imagemagick \
+    default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Configurar extensões PHP

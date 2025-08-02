@@ -9,10 +9,10 @@ services:
     container_name: magento_marketplace_web
     ports:
       - "8080:80"
-    volumes:
-      - ./magento2:/var/www/html
-      - ./themes:/var/www/html/app/design/frontend
-      - ./modules:/var/www/html/app/code
+    # volumes:
+    #   - ./magento2:/var/www/html
+    #   - ./themes:/var/www/html/app/design/frontend
+    #   - ./modules:/var/www/html/app/code
     depends_on:
       - db
       - elasticsearch

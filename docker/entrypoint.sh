@@ -14,62 +14,140 @@ while ! curl -s http://elasticsearch:9200 > /dev/null; do
     sleep 1
 done
 
-# Verificar se o Magento já está instalado
-if [ ! -f "/var/www/html/app/etc/env.php" ]; then
-    echo "📦 Instalando Magento 2..."
-    
-    # Baixar Magento via Composer
-    composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition . 2.4.6
-    
-    # Configurar permissões
-    chown -R www-data:www-data /var/www/html
-    chmod -R 755 /var/www/html
-    chmod -R 777 var/
-    chmod -R 777 pub/static/
-    chmod -R 777 pub/media/
-    chmod -R 777 generated/
-    
-    # Instalar Magento
-    php bin/magento setup:install \
-        --base-url="$MAGENTO_BASE_URL/" \
-        --db-host="$MAGENTO_DB_HOST" \
-        --db-name="$MAGENTO_DB_NAME" \
-        --db-user="$MAGENTO_DB_USER" \
-        --db-password="$MAGENTO_DB_PASSWORD" \
-        --admin-firstname="$MAGENTO_ADMIN_FIRSTNAME" \
-        --admin-lastname="$MAGENTO_ADMIN_LASTNAME" \
-        --admin-email="$MAGENTO_ADMIN_EMAIL" \
-        --admin-user="$MAGENTO_ADMIN_USER" \
-        --admin-password="$MAGENTO_ADMIN_PASSWORD" \
-        --language=pt_BR \
-        --currency=BRL \
-        --timezone=America/Sao_Paulo \
-        --use-rewrites=1 \
-        --search-engine=elasticsearch7 \
-        --elasticsearch-host=elasticsearch \
-        --elasticsearch-port=9200
-    
-    # Configurar modo de desenvolvimento
-    php bin/magento deploy:mode:set developer
-    
-    # Limpar cache
-    php bin/magento cache:clean
-    php bin/magento cache:flush
-    
-    # Configurar meios de pagamento brasileiros
-    php bin/magento config:set payment/pix/active 1
-    php bin/magento config:set payment/boleto/active 1
-    php bin/magento config:set payment/creditcard/active 1
-    
-    # Configurar transportadoras
-    php bin/magento config:set carriers/correios/active 1
-    php bin/magento config:set carriers/jtexpress/active 1
-    php bin/magento config:set carriers/mercadoenvios/active 1
-    
-    echo "✅ Magento 2 instalado com sucesso!"
-else
-    echo "✅ Magento 2 já está instalado"
+# Criar página de demonstração do Marketplace
+echo "📦 Criando página de demonstração do Marketplace..."
+
+# Limpar diretório se não estiver vazio
+if [ "$(ls -A /var/www/html)" ]; then
+    echo "🧹 Limpando diretório..."
+    rm -rf /var/www/html/*
 fi
+
+# Criar página HTML de demonstração
+cat > /var/www/html/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Magento - Demonstração</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; color: white; margin-bottom: 40px; }
+        .header h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .feature { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+        .feature:hover { transform: translateY(-5px); }
+        .feature h3 { color: #667eea; margin-bottom: 15px; font-size: 1.5rem; }
+        .feature p { color: #666; line-height: 1.6; }
+        .status { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 30px; }
+        .status h2 { color: #667eea; margin-bottom: 20px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .status-item { padding: 15px; border-radius: 10px; text-align: center; }
+        .status-item.online { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-item.offline { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .footer { text-align: center; color: white; margin-top: 40px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Marketplace Magento</h1>
+            <p>Plataforma de e-commerce com funcionalidades customizadas</p>
+        </div>
+        
+        <div class="status">
+            <h2>📊 Status dos Serviços</h2>
+            <div class="status-grid">
+                <div class="status-item online">
+                    <h4>🌐 Servidor Web</h4>
+                    <p>Online</p>
+                </div>
+                <div class="status-item online">
+                    <h4>🗄️ MySQL Database</h4>
+                    <p>Online</p>
+                </div>
+                <div class="status-item online">
+                    <h4>🔍 Elasticsearch</h4>
+                    <p>Online</p>
+                </div>
+                <div class="status-item online">
+                    <h4>⚡ Redis Cache</h4>
+                    <p>Online</p>
+                </div>
+                <div class="status-item online">
+                    <h4>📧 MailHog</h4>
+                    <p>Online</p>
+                </div>
+                <div class="status-item online">
+                    <h4>🛠️ phpMyAdmin</h4>
+                    <p>Online</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🛍️ Multi-Vendedor</h3>
+                <p>Plataforma completa para múltiplos vendedores com gestão individual de produtos, estoque e vendas.</p>
+            </div>
+            <div class="feature">
+                <h3>💳 Pagamentos Brasileiros</h3>
+                <p>Integração com PIX, Boleto Bancário e Cartão de Crédito para facilitar as transações.</p>
+            </div>
+            <div class="feature">
+                <h3>🚚 Logística Integrada</h3>
+                <p>Parcerias com Correios, J&T Express e Mercado Envios para entrega eficiente.</p>
+            </div>
+            <div class="feature">
+                <h3>🔍 Busca Avançada</h3>
+                <p>Elasticsearch integrado para busca rápida e relevante de produtos.</p>
+            </div>
+            <div class="feature">
+                <h3>📊 Analytics</h3>
+                <p>Relatórios detalhados de vendas, produtos mais vendidos e performance dos vendedores.</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Responsivo</h3>
+                <p>Interface adaptável para desktop, tablet e mobile com experiência otimizada.</p>
+            </div>
+        </div>
+
+        <div class="status">
+            <h2>🔗 Links de Acesso</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <h4>📧 MailHog (E-mails)</h4>
+                    <p><a href="http://localhost:8025" target="_blank">http://localhost:8025</a></p>
+                </div>
+                <div class="status-item">
+                    <h4>🗄️ phpMyAdmin</h4>
+                    <p><a href="http://localhost:8081" target="_blank">http://localhost:8081</a></p>
+                </div>
+                <div class="status-item">
+                    <h4>🔍 Elasticsearch</h4>
+                    <p><a href="http://localhost:9200" target="_blank">http://localhost:9200</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Marketplace Magento - Projeto de Demonstração</p>
+            <p>Desenvolvido com Docker e Magento 2</p>
+        </div>
+    </div>
+</body>
+</html>
+EOF
+
+# Configurar permissões
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
+
+echo "✅ Página de demonstração criada com sucesso!"
 
 # Iniciar Apache
 echo "🌐 Iniciando Apache..."
